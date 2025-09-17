@@ -69,7 +69,7 @@ namespace TaskNoteManager.Infrastructure.DataAccess.UnitOfWork
         /// commands within the transaction  and commit or roll back the transaction as needed.</remarks>
         public void BeginTransaction()
         {
-            _transaction = _connection.BeginTransaction();
+            _transaction = Connection.BeginTransaction();
         }
 
         /// <summary>

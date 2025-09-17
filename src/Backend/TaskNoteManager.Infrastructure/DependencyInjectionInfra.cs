@@ -1,10 +1,10 @@
-﻿using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TaskNoteManager.Domain.DataAccess.UnitOfWork;
+using TaskNoteManager.Domain.Repositories.User;
 using TaskNoteManager.Infrastructure.DataAccess;
-using TaskNoteManager.Infrastructure.DataAccess.UnitOfWork;
 using TaskNoteManager.Infrastructure.Extensions;
+using TaskNoteManager.Infrastructure.Repositories.User;
 
 namespace TaskNoteManager.Infrastructure
 {
@@ -26,6 +26,7 @@ namespace TaskNoteManager.Infrastructure
         public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             AddDatabaseContext(services, configuration);
+            AddRepositories(services);
         }
 
         /// <summary>
@@ -37,12 +38,17 @@ namespace TaskNoteManager.Infrastructure
         /// <param name="configuration">The application configuration used to retrieve the database connection string.</param>
         private static void AddDatabaseContext(IServiceCollection services, IConfiguration configuration)
         {
-            //Get connectionString from ./TaskNoteManager.Infrastructure/Extensions/ConfigurationExtension.cs
+            // get connectionString from ./TaskNoteManager.Infrastructure/Extensions/ConfigurationExtension.cs
             var connectionString = configuration.ConnectionString();
-            
-            services.AddScoped<IUnitOfWork,UnitOfWork<SqlConnection>>();
-            services.AddScoped(c=> new SqlServerFactoryUnitOfWork(connectionString));
 
+            services.AddScoped<IUnitOfWork>(
+                opt => new SqlServerFactoryUnitOfWork(connectionString));
+        }
+
+        private static void AddRepositories(IServiceCollection services)
+        {
+            services.AddScoped<IUserReadOnlyRepository, UserReadOnlyRepository>();
+            services.AddScoped<IUserWriteOnlyRepository, UserWriteOnlyRepository>();
         }
     }
 }

@@ -12,10 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\TaskNoteManager.Application\TaskNoteManager.Application.csproj" />
     <ProjectReference Include="..\TaskNoteManager.Communication\TaskNoteManager.Communication.csproj" />
     <ProjectReference Include="..\TaskNoteManager.Infrastructure\TaskNoteManager.Infrastructure.csproj" />

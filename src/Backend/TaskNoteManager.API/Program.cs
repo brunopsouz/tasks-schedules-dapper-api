@@ -1,3 +1,5 @@
+using TaskNoteManager.API.Filters;
+using TaskNoteManager.Application;
 using TaskNoteManager.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,7 +8,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
+builder.Services.AddMvc(options => options.Filters.Add(typeof(ExceptionFilter)));
+
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddApplication(builder.Configuration);
+
+builder.Services.AddRouting(opt => opt.LowercaseUrls = true);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
